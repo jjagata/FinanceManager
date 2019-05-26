@@ -97,6 +97,34 @@ public class DBAdapter {
 
     }
 
+    public Collection<Spending> getSpendings(int userId, int month, int year) throws SQLException {
+        Statement statement = conn.createStatement();
+        String sql = "SELECT user_id,amount, month, year, day FROM expenses WHERE user_id =" + userId + " AND month =" +
+                month + " AND year = " + year;
+        ResultSet rs = statement.executeQuery(sql);
+        Collection<Spending> spendings = new ArrayList<>();
+
+        /*while (rs.next()) {
+            Budget bu = new Budget();
+            bu.setBudgetId(rs.getInt("budget_id"));
+            bu.setBudget(rs.getBigDecimal("amount"));
+
+            User user = new User();
+            user.setId(rs.getInt("user_id"));
+            bu.setUser(user);
+
+            int month = rs.getInt("month");
+            int year = rs.getInt("year");
+
+            Calendar calendar = new GregorianCalendar(year, month, 1);
+            bu.setMonth(calendar);
+            spendings.add(bu);
+
+        }*/
+        return spendings;
+    }
+
+
     private void connectToDb() {
         try {
             readDatabaseProperties();
