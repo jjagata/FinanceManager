@@ -1,9 +1,6 @@
 package pl.financemanager;
 
-import pl.financemanager.db.Budget;
-import pl.financemanager.db.Category;
-import pl.financemanager.db.DBAdapter;
-import pl.financemanager.db.User;
+import pl.financemanager.db.*;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -33,6 +30,14 @@ public class Application {
         budget.setUser(user);
 
         dbAdapter.saveBudget(budget);
+
+        Spending sp = new Spending ();
+        sp.setAmount(BigDecimal.valueOf(300));
+        sp.setDay(calendar);
+        sp.setCategory(test.iterator().next());
+        sp.setUser(user);
+        sp.setSpendingId(1);
+        dbAdapter.saveSpending(sp);
     }
 
 

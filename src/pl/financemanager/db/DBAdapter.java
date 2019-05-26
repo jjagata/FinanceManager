@@ -60,7 +60,35 @@ public class DBAdapter {
                     "," + bu.getMonth().get(Calendar.MONTH) + "," + bu.getMonth().get(Calendar.YEAR) + ")";
         } else {
             sql = "UPDATE budgets SET amount=" + bu.getBudget() + ", month=" + bu.getMonth().get(Calendar.MONTH) +
-                    ",year=" + bu.getMonth().get(Calendar.YEAR) + " WHERE budget_id ="+ bu.getBudgetId();
+                    ",year=" + bu.getMonth().get(Calendar.YEAR) + " WHERE budget_id =" + bu.getBudgetId();
+
+        }
+
+        System.out.println(sql);
+        statement.execute(sql);
+
+    }
+
+    public void saveSpending(Spending sp) throws SQLException {
+        Statement statement = conn.createStatement();
+        String sql;
+        if (sp.getSpendingId() == null) {
+            sql = "INSERT INTO expenses(user_id,amount,day, month,year,category_id) VALUES ("
+                    + sp.getUser().getId() + ","
+                    + sp.getAmount() + ","
+                    + sp.getDay().get(Calendar.DAY_OF_MONTH) + ","
+                    + sp.getDay().get(Calendar.MONTH) + ","
+                    + sp.getDay().get(Calendar.YEAR) + ","
+                    + sp.getCategory().getCategoryId() +
+                    ")";
+        } else {
+            sql = "UPDATE expenses SET amount="
+                    + sp.getAmount() + ", day="
+                    + sp.getDay().get(Calendar.DAY_OF_MONTH) + ", month="
+                    + sp.getDay().get(Calendar.MONTH) + ",year="
+                    + sp.getDay().get(Calendar.YEAR) + ", category_id="
+                    + sp.getCategory().getCategoryId() + " WHERE expenses_id ="
+                    + sp.getSpendingId();
 
         }
 
