@@ -21,7 +21,8 @@ public class Application {
         }
 
         Budget budget = new Budget();
-        budget.setBudget(BigDecimal.valueOf(100000));
+        budget.setBudget(BigDecimal.valueOf(5000));
+        budget.setBudgetId(1);
 
         Calendar calendar =new GregorianCalendar(2020,7,1);
         budget.setMonth(calendar);

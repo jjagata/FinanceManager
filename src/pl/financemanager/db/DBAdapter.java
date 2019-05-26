@@ -54,10 +54,18 @@ public class DBAdapter {
 
     public void saveBudget(Budget bu) throws SQLException {
         Statement statement = conn.createStatement();
-        String sql = "INSERT INTO budgets(user_id,amount, month,year) VALUES (" + bu.getUser().getId() + "," + bu.getBudget() +
-                "," + bu.getMonth().get(Calendar.MONTH) + "," + bu.getMonth().get(Calendar.YEAR) + ")";
+        String sql;
+        if (bu.getBudgetId() == null) {
+            sql = "INSERT INTO budgets(user_id,amount, month,year) VALUES (" + bu.getUser().getId() + "," + bu.getBudget() +
+                    "," + bu.getMonth().get(Calendar.MONTH) + "," + bu.getMonth().get(Calendar.YEAR) + ")";
+        } else {
+            sql = "UPDATE budgets SET amount=" + bu.getBudget() + ", month=" + bu.getMonth().get(Calendar.MONTH) +
+                    ",year=" + bu.getMonth().get(Calendar.YEAR) + " WHERE budget_id ="+ bu.getBudgetId();
+
+        }
+
         System.out.println(sql);
-        statement.executeQuery(sql);
+        statement.execute(sql);
 
     }
 
