@@ -11,47 +11,57 @@ public class DBAdapter {
     private Properties props;
     private Connection conn;
 
-    public DBAdapter(){
-       connectToDb();
+    public DBAdapter() {
+        connectToDb();
     }
 
-    public Collection<Category> getCategories()throws SQLException{
+    public Collection<Category> getCategories() throws SQLException {
         Statement statement = conn.createStatement();
         String sql = "SELECT category_id, category_name FROM categories";
         ResultSet rs = statement.executeQuery(sql);
         Collection<Category> categories = new ArrayList<>();
-        while(rs.next()){
-            Category cat = new Category(rs.getInt("category_id"),rs.getString("category_name"));
+        while (rs.next()) {
+            Category cat = new Category(rs.getInt("category_id"), rs.getString("category_name"));
             categories.add(cat);
         }
         return categories;
     }
-    public Collection<Budget> getBudgets(int userId)throws SQLException{
+
+    public Collection<Budget> getBudgets(int userId) throws SQLException {
         Statement statement = conn.createStatement();
-        String sql = "SELECT user_id,amount, month, year, budget_id FROM budgets WHERE user_id ="+ userId;
+        String sql = "SELECT user_id,amount, month, year, budget_id FROM budgets WHERE user_id =" + userId;
         ResultSet rs = statement.executeQuery(sql);
         Collection<Budget> budgets = new ArrayList<>();
-        while(rs.next()){
-           Budget bu = new Budget();
-           bu.setBudgetId(rs.getInt("budget_id"));
-           bu.setBudget(rs.getBigDecimal("amount"));
+        while (rs.next()) {
+            Budget bu = new Budget();
+            bu.setBudgetId(rs.getInt("budget_id"));
+            bu.setBudget(rs.getBigDecimal("amount"));
 
-           User user = new User();
-           user.setId(rs.getInt("user_id"));
-           bu.setUser(user);
+            User user = new User();
+            user.setId(rs.getInt("user_id"));
+            bu.setUser(user);
 
-           int month = rs.getInt("month");
-           int year = rs.getInt("year");
+            int month = rs.getInt("month");
+            int year = rs.getInt("year");
 
-           Calendar calendar = new GregorianCalendar(year,month,1);
-           bu.setMonth(calendar);
-           budgets.add(bu);
+            Calendar calendar = new GregorianCalendar(year, month, 1);
+            bu.setMonth(calendar);
+            budgets.add(bu);
 
         }
         return budgets;
     }
 
-    private void connectToDb(){
+    public void saveBudget(Budget bu) throws SQLException {
+        Statement statement = conn.createStatement();
+        String sql = "INSERT INTO budgets(user_id,amount, month,year) VALUES (" + bu.getUser().getId() + "," + bu.getBudget() +
+                "," + bu.getMonth().get(Calendar.MONTH) + "," + bu.getMonth().get(Calendar.YEAR) + ")";
+        System.out.println(sql);
+        statement.executeQuery(sql);
+
+    }
+
+    private void connectToDb() {
         try {
             readDatabaseProperties();
             conn = getConnection();
