@@ -99,29 +99,46 @@ public class DBAdapter {
 
     public Collection<Spending> getSpendings(int userId, int month, int year) throws SQLException {
         Statement statement = conn.createStatement();
-        String sql = "SELECT user_id,amount, month, year, day FROM expenses WHERE user_id =" + userId + " AND month =" +
+        String sql = "SELECT expenses_id,user_id,amount, month, year, day FROM expenses WHERE user_id =" + userId + " AND month =" +
                 month + " AND year = " + year;
         ResultSet rs = statement.executeQuery(sql);
         Collection<Spending> spendings = new ArrayList<>();
 
-        /*while (rs.next()) {
-            Budget bu = new Budget();
-            bu.setBudgetId(rs.getInt("budget_id"));
-            bu.setBudget(rs.getBigDecimal("amount"));
+        while (rs.next()) {
+            Spending sp = new Spending();
+            sp.setSpendingId(rs.getInt("expenses_id"));
+            sp.setAmount(rs.getBigDecimal("amount"));
 
             User user = new User();
             user.setId(rs.getInt("user_id"));
-            bu.setUser(user);
+            sp.setUser(user);
 
-            int month = rs.getInt("month");
-            int year = rs.getInt("year");
+            int day = rs.getInt("day");
 
-            Calendar calendar = new GregorianCalendar(year, month, 1);
-            bu.setMonth(calendar);
-            spendings.add(bu);
+            Calendar calendar = new GregorianCalendar(year, month,day);
+            sp.setDay(calendar);
+            spendings.add(sp);
 
-        }*/
+        }
         return spendings;
+    }
+
+    public User login(String log,String password)throws SQLException{
+        Statement statement = conn.createStatement();
+        String sql = "SELECT user_id, login, password FROM users WHERE login = '" + log + "' AND password = '" +
+                password + "'";
+        ResultSet rs = statement.executeQuery(sql);
+
+        if(rs.next()==false){
+            return null;
+        }
+        User user = new User();
+        user.setId(rs.getInt("user_id"));
+        user.setPassword(rs.getString("password"));
+        user.setLogin(rs.getString("login"));
+
+        return user;
+
     }
 
 

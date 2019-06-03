@@ -1,6 +1,7 @@
 package pl.financemanager;
 
 import pl.financemanager.db.*;
+import pl.financemanager.gui.LoginWindow;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -10,7 +11,7 @@ import java.util.GregorianCalendar;
 
 public class Application {
     public static void main(String[] args) throws SQLException {
-        DBAdapter dbAdapter = new DBAdapter();
+        /*DBAdapter dbAdapter = new DBAdapter();
 
         Collection<Category> test = dbAdapter.getCategories();
         for(Category c :test){
@@ -38,6 +39,18 @@ public class Application {
         sp.setUser(user);
         sp.setSpendingId(1);
         dbAdapter.saveSpending(sp);
+
+        user = dbAdapter.login("aga","aga");
+        if( user== null){
+            System.out.println("Inwalid login or password");
+        }
+        else{
+            System.out.println("Welcome "+ user.getLogin());
+        }*/
+
+        LoginWindow loginWindow = new LoginWindow("Login");
+        loginWindow.init();
+
     }
 
 
