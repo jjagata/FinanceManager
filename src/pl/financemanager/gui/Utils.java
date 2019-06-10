@@ -1,6 +1,34 @@
 package pl.financemanager.gui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public class Utils {
+	private static String datePattern = "dd.MM.yyyy";
+	private static SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+
+	public static Calendar getCalendar(String date){
+		try {
+			Date d = (Date) dateFormatter.parseObject(date);
+			Calendar cal = new GregorianCalendar();
+			cal.setTime(d);
+			return cal;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String getFormattedCalendar(Calendar cal){
+		if (cal != null) {
+			return dateFormatter.format(cal.getTime());
+		}
+
+		return "";
+	}
 
 	public static String monthList[] = { "January", "February", "March", "April", "May", "June", "July", "August",
 			"September", "October", "November", "December" };

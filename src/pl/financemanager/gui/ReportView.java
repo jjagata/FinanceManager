@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -78,9 +79,13 @@ public class ReportView extends JPanel {
 	}
 
 	public void update() {
-		this.tableModel.setDataVector(
-				logic.getSpendings(this.months.getSelectedIndex(), (Integer) this.years.getSelectedItem(), 1),
-				Constants.REPORT_TABLE_HEADER);
+		try {
+			this.tableModel.setDataVector(
+					logic.getSpendings(this.months.getSelectedIndex(), (Integer) this.years.getSelectedItem(), 1),
+					Constants.REPORT_TABLE_HEADER);
+		} catch (SQLException e) {
+			AppContext.getInstance().showError();
+		}
 
 		CategoryPlot p = (CategoryPlot) this.chart.getPlot();
 		p.setDataset(logic.createDataset(this.months.getSelectedIndex(), (Integer) this.years.getSelectedItem(), 1));

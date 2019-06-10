@@ -2,64 +2,72 @@ package pl.financemanager.gui;
 
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import pl.financemanager.db.Budget;
-import pl.financemanager.db.DBAdapter;
-import pl.financemanager.db.User;
+import pl.financemanager.db.*;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 
 public class AppLogic {
     DBAdapter dba = new DBAdapter();
+    Collection<Category> categories;
 
     public User login(String log, char[] password) throws SQLException {
         return dba.login(log, String.valueOf(password));
     }
 
-    public Object[][] getSpendings(int month, int year, int userId) {
+    public Object[][] getSpendings(int month, int year, int userId) throws SQLException {
         // call DB
-        Object[][] spendings = null;
+        Collection<Spending> spendings = dba.getSpendings(userId, month, year);
 
-        Object[][] data = {{"1", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"2", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"3", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"4", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"5", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"6", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"7", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"8", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"9", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"10", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"11", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"12", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"13", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"14", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"15", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"16", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"17", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"18", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"19", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"20", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"21", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"22", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"23", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"24", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"25", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"26", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"27", Utils.getMonth(month), year, 100, 1500, "Food"},
-                {"28", Utils.getMonth(month), year, 100, 1400, "Food"},
-                {"29", Utils.getMonth(month), year, 100, 1300, "Food"},
-                {"30", Utils.getMonth(month), year, 100, 1300, "Food"},
-                {"31", Utils.getMonth(month), year, 100, 1300, "Food"}};
-        return data;
+        Object[][] result = new Object[spendings.size()][6];
 
-        // return spendings;
+        int j = 0;
+        for (Spending spending : spendings) {
+            result[j][0] = spending.getDay().get(Calendar.DAY_OF_MONTH);
+            result[j][1] = Utils.getMonth(spending.getDay().get(Calendar.MONTH));
+            result[j][2] = spending.getDay().get(Calendar.YEAR);
+            result[j][3] = spending.getAmount();
+            result[j][4] = "";
+            result[j][5] = spending.getCategory();
+            j++;
+        }
+
+        return result;
     }
 
-    public CategoryDataset createDataset(int month, int year, int userId) {
+    public Object[][] getSpendings(int userId) throws SQLException {
+        /// call DB
+        Collection<Spending> spendings = dba.getSpendings(userId);
+
+        Object[][] result = new Object[spendings.size()][3];
+
+        int j = 0;
+        // iterate the set:
+        for (Spending spending : spendings) {
+            result[j][0] = Utils.getFormattedCalendar(spending.getDay());
+            result[j][1] = spending.getAmount();
+            result[j][2] = spending.getCategory();
+            j++;
+        }
+
+        return result;
+    }
+
+    public void saveSpending(Integer userId, Calendar day, Category cat, BigDecimal amount) throws SQLException {
+        User user = new User(userId);
+        Spending spending = new Spending(null, amount, day, cat, user);
+        dba.saveSpending(spending);
+    }
+
+
+    public CategoryDataset createDataset(int month, int year, int userId) throws SQLException{
         final String DAY = "Day";
+
+        Collection<Spending> spendings = dba.getSpendings(userId, month, year);
+
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         dataset.addValue(Math.random() * 1000, DAY, "01.01.2019");
@@ -90,50 +98,25 @@ public class AppLogic {
 
     public void saveBudget(int userId, int month, int year, BigDecimal value) throws SQLException {
         Budget budget = new Budget(month, year, value, userId);
-        Integer budgetId = dba.getBudgetId(userId, month, year);
-        budget.setBudgetId(budgetId);
+        Budget dbBudget = dba.getBudget(userId, month, year);
+        if(dbBudget != null) {
+            budget.setBudgetId(dbBudget.getBudgetId());
+        }
         dba.saveBudget(budget);
     }
 
-    public String[] getCategories() {
-        return new String[]{"Food", "Clothes", "Fuel"};
+    public CategoryModel getCategories() throws SQLException {
+        Collection<Category> categories = dba.getCategories();
+        Category[] categoryArray = new Category[categories.size()];
+
+        int j = 0;
+        for (Category cat : categories) {
+            categoryArray[j] = cat;
+            j++;
+        }
+
+        return new CategoryModel(categoryArray);
     }
 
-    public Object[][] getSpendings(int userId) {
-        // call DB
-        Object[][] spendings = null;
 
-        Object[][] data = {{"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}, {"01.01.2017", Math.random() * 100},
-                {"01.01.2017", Math.random() * 100}};
-        return data;
-
-        // return budgets;
-    }
 }

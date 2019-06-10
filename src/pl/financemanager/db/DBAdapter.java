@@ -17,7 +17,7 @@ public class DBAdapter {
 
     public Collection<Category> getCategories() throws SQLException {
         Statement statement = conn.createStatement();
-        String sql = "SELECT category_id, category_name FROM categories";
+        String sql = "SELECT category_id, category_name FROM categories ORDER BY category_name";
         ResultSet rs = statement.executeQuery(sql);
         Collection<Category> categories = new ArrayList<>();
         while (rs.next()) {
@@ -47,21 +47,31 @@ public class DBAdapter {
             Calendar calendar = new GregorianCalendar(year, month, 1);
             bu.setMonth(calendar);
             budgets.add(bu);
-
         }
         return budgets;
     }
 
-    public Integer getBudgetId(int userId, int month, int year) throws SQLException {
+    public Budget getBudget(int userId, int month, int year) throws SQLException {
         Statement statement = conn.createStatement();
-        String sql = "SELECT budget_id FROM budgets WHERE user_id =" + userId + " AND month = " + month + " AND year = " + year;
+        String sql = "SELECT user_id,amount, month, year, budget_id FROM budgets WHERE user_id =" + userId + " AND month = " + month + " AND year = " + year;
         ResultSet rs = statement.executeQuery(sql);
 
         if (rs.next() == false) {
             return null;
         }
 
-        return rs.getInt("budget_id");
+        Budget bu = new Budget();
+        bu.setBudgetId(rs.getInt("budget_id"));
+        bu.setBudget(rs.getBigDecimal("amount"));
+
+        User user = new User();
+        user.setId(rs.getInt("user_id"));
+        bu.setUser(user);
+
+        Calendar calendar = new GregorianCalendar(year, month, 1);
+        bu.setMonth(calendar);
+
+        return bu;
     }
 
     public void saveBudget(Budget bu) throws SQLException {
@@ -76,9 +86,7 @@ public class DBAdapter {
 
         }
 
-        System.out.println(sql);
         statement.execute(sql);
-
     }
 
     public void saveSpending(Spending sp) throws SQLException {
@@ -104,9 +112,7 @@ public class DBAdapter {
 
         }
 
-        System.out.println(sql);
         statement.execute(sql);
-
     }
 
     public Collection<Spending> getSpendings(int userId, int month, int year) throws SQLException {
@@ -135,6 +141,40 @@ public class DBAdapter {
         return spendings;
     }
 
+    public Collection<Spending> getSpendings(int userId) throws SQLException {
+        Statement statement = conn.createStatement();
+        String sql = "SELECT expenses_id, user_id, amount, month, year, day, category_id FROM expenses WHERE user_id =" + userId + " ORDER BY year, month, day";
+        ResultSet rs = statement.executeQuery(sql);
+        Collection<Spending> spendings = new ArrayList<>();
+
+        while (rs.next()) {
+            Spending sp = new Spending();
+            sp.setSpendingId(rs.getInt("expenses_id"));
+            sp.setAmount(rs.getBigDecimal("amount"));
+
+            User user = new User();
+            user.setId(rs.getInt("user_id"));
+            sp.setUser(user);
+
+            Calendar calendar = new GregorianCalendar(rs.getInt("year"), rs.getInt("month"), rs.getInt("day"));
+            sp.setDay(calendar);
+            spendings.add(sp);
+
+            sp.setCategory(getCategory(rs.getInt("category_id")));
+        }
+        return spendings;
+    }
+
+    private Category getCategory(Integer categoryId) throws SQLException {
+        Collection<Category> categories = getCategories();
+        for (Category cat : categories) {
+            if (cat.getCategoryId().equals(categoryId)) {
+                return cat;
+            }
+        }
+        return null;
+    }
+
     public User login(String log, String password) throws SQLException {
         Statement statement = conn.createStatement();
         String sql = "SELECT user_id, login, password FROM users WHERE login = '" + log + "' AND password = '" +
@@ -150,9 +190,9 @@ public class DBAdapter {
         user.setLogin(rs.getString("login"));
 
         return user;
-
     }
 
+//-----------------------------------------------------------------------------
 
     private void connectToDb() {
         try {
@@ -164,7 +204,6 @@ public class DBAdapter {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
     private void readDatabaseProperties() throws IOException {
