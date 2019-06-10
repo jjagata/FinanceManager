@@ -11,19 +11,19 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 
-public class AppLogic {
-    private static AppLogic instance;
+public class AppService {
+    private static AppService instance;
     private DBAdapter dba;
 
-    private AppLogic(){
+    private AppService(){
         this.dba = new DBAdapter();
     }
 
-    public static AppLogic getInstance(){
-        if (AppLogic.instance == null) {
-            AppLogic.instance = new AppLogic();
+    public static AppService getInstance(){
+        if (AppService.instance == null) {
+            AppService.instance = new AppService();
         }
-        return AppLogic.instance;
+        return AppService.instance;
     }
 
     public User login(String log, char[] password) throws SQLException {

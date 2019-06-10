@@ -25,7 +25,7 @@ class BudgetsView extends JPanel {
     private JButton saveButton;
     private JTable table;
     private DefaultTableModel tableModel;
-    private AppLogic logic;
+    private AppService logic;
 
     public BudgetsView() {
         this.setLayout(new BorderLayout());
@@ -38,7 +38,7 @@ class BudgetsView extends JPanel {
         this.budgetField = new JTextField(10);
         this.saveButton = new JButton("Save");
         this.table = new JTable();
-        this.logic = AppLogic.getInstance();
+        this.logic = AppService.getInstance();
 
         JPanel addBudgetPanel = new JPanel();
         addBudgetPanel.add(this.monthLabel);

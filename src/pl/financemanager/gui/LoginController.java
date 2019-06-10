@@ -9,13 +9,13 @@ import java.sql.SQLException;
 
 class LoginController implements ActionListener {
     private JFrame frame;
-    private AppLogic logic;
+    private AppService logic;
     private LoginView view;
 
     public LoginController(JFrame frame, LoginView view) {
         this.frame = frame;
         this.view = view;
-        this.logic = AppLogic.getInstance();
+        this.logic = AppService.getInstance();
     }
 
     @Override

@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -36,12 +34,12 @@ class SpendingsView extends JPanel {
     private JButton saveButton;
     private JTable table;
     private DefaultTableModel tableModel;
-    private AppLogic logic;
+    private AppService logic;
 
     public SpendingsView() {
         this.setLayout(new BorderLayout());
 
-        this.logic = AppLogic.getInstance();
+        this.logic = AppService.getInstance();
 
         this.dayLabel = new JLabel("Day: ");
         UtilDateModel model = new UtilDateModel();

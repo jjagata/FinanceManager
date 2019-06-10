@@ -7,11 +7,11 @@ import java.sql.SQLException;
 
 public class BudgetsController implements ActionListener {
 	private BudgetsView view;
-	private AppLogic logic;
+	private AppService logic;
 
 	public BudgetsController(BudgetsView view) {
 		this.view = view;
-		this.logic = AppLogic.getInstance();
+		this.logic = AppService.getInstance();
 	}
 
 	@Override

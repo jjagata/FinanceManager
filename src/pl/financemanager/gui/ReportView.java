@@ -31,7 +31,7 @@ class ReportView extends JPanel {
     private JComboBox<Integer> years;
     private JTable table;
     private DefaultTableModel tableModel;
-    private AppLogic logic;
+    private AppService logic;
     private ChartPanel chartPanel;
     private JFreeChart chart;
 
@@ -43,7 +43,7 @@ class ReportView extends JPanel {
         this.months = new JComboBox<>(Utils.monthList);
         this.years = new JComboBox<>(Utils.yearList);
         this.table = new JTable();
-        this.logic = AppLogic.getInstance();
+        this.logic = AppService.getInstance();
 
         JPanel filterPanel = new JPanel();
         filterPanel.add(this.monthLabel);

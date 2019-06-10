@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 class ReportController implements ActionListener {
-	private AppLogic logic;
+	private AppService logic;
 	private ReportView view;
 
 	public ReportController(ReportView view) {
-		this.logic = AppLogic.getInstance();
+		this.logic = AppService.getInstance();
 		this.view = view;
 	}
 

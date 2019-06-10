@@ -1,8 +1,6 @@
 package pl.financemanager.gui;
 
 import pl.financemanager.db.Category;
-import pl.financemanager.db.Spending;
-import pl.financemanager.db.User;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,11 +10,11 @@ import java.util.Calendar;
 
 class SpendingsController implements ActionListener {
     private SpendingsView view;
-    private AppLogic logic;
+    private AppService logic;
 
     public SpendingsController(SpendingsView view) {
         this.view = view;
-        this.logic = AppLogic.getInstance();
+        this.logic = AppService.getInstance();
     }
 
     @Override
