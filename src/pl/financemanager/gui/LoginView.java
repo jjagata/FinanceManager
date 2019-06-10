@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class LoginView extends JPanel {	
+class LoginView extends JPanel {
 	private JFrame frame;
 	private JLabel loginLabel;
 	private JLabel passwordLabel;

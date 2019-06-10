@@ -25,7 +25,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import pl.financemanager.db.Category;
 
-public class SpendingsView extends JPanel {
+class SpendingsView extends JPanel {
     private JLabel dayLabel;
     private JDatePickerImpl datePicker;
     private JLabel categoryLabel;
@@ -57,7 +57,7 @@ public class SpendingsView extends JPanel {
         try {
             this.categories = new JComboBox<>(logic.getCategories());
         } catch (SQLException e) {
-            AppContext.getInstance().showError();
+            AppContext.showError();
         }
         this.amountLabel = new JLabel("Amount: ");
         this.amountField = new JTextField(10);
@@ -93,9 +93,9 @@ public class SpendingsView extends JPanel {
 
     public void update() {
         try {
-            this.tableModel.setDataVector(logic.getSpendings(AppContext.getInstance().getUser().getId()), Constants.SPENDINGS_TABLE_HEADER);
+            this.tableModel.setDataVector(logic.getSpendings(AppContext.getUser().getId()), Constants.SPENDINGS_TABLE_HEADER);
         } catch (SQLException e) {
-            AppContext.getInstance().showError();
+            AppContext.showError();
         }
     }
 
@@ -103,34 +103,13 @@ public class SpendingsView extends JPanel {
         return datePicker;
     }
 
-    public void setDatePicker(JDatePickerImpl datePicker) {
-        this.datePicker = datePicker;
-    }
-
     public JComboBox<Category> getCategories() {
         return categories;
-    }
-
-    public void setCategories(JComboBox<Category> categories) {
-        this.categories = categories;
     }
 
     public JTextField getAmountField() {
         return amountField;
     }
-
-    public void setAmountField(JTextField amountField) {
-        this.amountField = amountField;
-    }
-
-    public DefaultTableModel getTableModel() {
-        return tableModel;
-    }
-
-    public void setTableModel(DefaultTableModel tableModel) {
-        this.tableModel = tableModel;
-    }
-
 }
 
 class DateLabelFormatter extends AbstractFormatter {

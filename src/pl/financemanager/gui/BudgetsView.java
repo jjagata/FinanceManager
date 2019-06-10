@@ -15,7 +15,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class BudgetsView extends JPanel {
+class BudgetsView extends JPanel {
     private JLabel monthLabel;
     private JLabel yearLabel;
     private JComboBox<String> months;
@@ -71,13 +71,13 @@ public class BudgetsView extends JPanel {
         this.update();
     }
 
-    public void update() {
+    void update() {
         try {
             this.tableModel.setDataVector(
-                    logic.getBudgets(AppContext.getInstance().getUser().getId()),
+                    logic.getBudgets(AppContext.getUser().getId()),
                     Constants.BUDGETS_TABLE_HEADER);
         } catch (SQLException e) {
-            AppContext.getInstance().showError();
+            AppContext.showError();
         }
 
     }
@@ -86,31 +86,11 @@ public class BudgetsView extends JPanel {
         return months;
     }
 
-    public void setMonths(JComboBox<String> months) {
-        this.months = months;
-    }
-
     public JComboBox<Integer> getYears() {
         return years;
     }
 
-    public void setYears(JComboBox<Integer> years) {
-        this.years = years;
-    }
-
-    public DefaultTableModel getTableModel() {
-        return tableModel;
-    }
-
-    public void setTableModel(DefaultTableModel tableModel) {
-        this.tableModel = tableModel;
-    }
-
     public JTextField getBudgetField() {
         return budgetField;
-    }
-
-    public void setBudgetField(JTextField budgetField) {
-        this.budgetField = budgetField;
     }
 }

@@ -1,15 +1,10 @@
 package pl.financemanager.gui;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.ValueMarker;
-
-public class ReportController implements ActionListener {
+class ReportController implements ActionListener {
 	private AppLogic logic;
 	private ReportView view;
 
@@ -25,7 +20,7 @@ public class ReportController implements ActionListener {
 		try {
 			view.getTableModel().setDataVector(logic.getSpendings(month, year, 1), Constants.REPORT_TABLE_HEADER);
 		} catch (SQLException ex) {
-			AppContext.getInstance().showError();
+			AppContext.showError();
 		}
 
 		view.update();

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-public class SpendingsController implements ActionListener {
+class SpendingsController implements ActionListener {
     private SpendingsView view;
     private AppLogic logic;
 
@@ -30,17 +30,17 @@ public class SpendingsController implements ActionListener {
             try {
                 amount = BigDecimal.valueOf(Double.valueOf(view.getAmountField().getText()));
             } catch (NumberFormatException ex) {
-                AppContext.getInstance().showError("Invalid amount value!");
+                AppContext.showError("Invalid amount value!");
                 view.getAmountField().setText("");
                 return;
             }
 
             Category cat = (Category) view.getCategories().getSelectedItem();
-            int userId = AppContext.getInstance().getUser().getId();
+            int userId = AppContext.getUser().getId();
             try {
                 logic.saveSpending(userId, day, cat, amount);
             } catch (SQLException ex) {
-                AppContext.getInstance().showError();
+                AppContext.showError();
             }
         }
 

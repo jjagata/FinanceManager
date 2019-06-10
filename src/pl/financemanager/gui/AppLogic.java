@@ -6,27 +6,21 @@ import pl.financemanager.db.*;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 
 public class AppLogic {
-    DBAdapter dba = new DBAdapter();
-    Collection<Category> categories;
+    private DBAdapter dba = new DBAdapter();
 
     public User login(String log, char[] password) throws SQLException {
         return dba.login(log, String.valueOf(password));
     }
 
     public Object[][] getSpendings(int month, int year, int userId) throws SQLException {
-        // call DB
         Collection<Spending> spendings = dba.getSpendings(userId, month, year);
-
         Object[][] result = new Object[spendings.size()][5];
-
-        Budget budget = dba.getBudget(userId, month, year);
 
         int j = 0;
         for (Spending spending : spendings) {
@@ -53,13 +47,11 @@ public class AppLogic {
     }
 
     public Object[][] getSpendings(int userId) throws SQLException {
-        /// call DB
         Collection<Spending> spendings = dba.getSpendings(userId);
 
         Object[][] result = new Object[spendings.size()][3];
 
         int j = 0;
-        // iterate the set:
         for (Spending spending : spendings) {
             result[j][0] = Utils.getFormattedCalendar(spending.getDay());
             result[j][1] = spending.getAmount();
@@ -79,9 +71,7 @@ public class AppLogic {
 
     public CategoryDataset createDataset(int month, int year, int userId) throws SQLException {
         final String DAY = "Day";
-
         Collection<Spending> spendings = dba.getSpendings(userId, month, year);
-
         YearMonth yearMonthObject = YearMonth.of(year, month + 1);
         int daysInMonth = yearMonthObject.lengthOfMonth();
 
@@ -126,13 +116,10 @@ public class AppLogic {
     }
 
     public Object[][] getBudgets(int userId) throws SQLException {
-        // call DB
         Collection<Budget> budgets = dba.getBudgets(userId);
-
         Object[][] result = new Object[budgets.size()][3];
 
         int j = 0;
-        // iterate the set:
         for (Budget budget : budgets) {
             result[j][0] = Utils.getMonth(budget.getMonth().get(Calendar.MONTH));
             result[j][1] = budget.getMonth().get(Calendar.YEAR);
@@ -168,6 +155,4 @@ public class AppLogic {
 
         return new CategoryModel(categoryArray);
     }
-
-
 }

@@ -5,7 +5,7 @@ import pl.financemanager.db.User;
 import javax.swing.*;
 
 public class AppContext {
-    private User user;
+    private static User user;
     private static AppContext instance;
 
     private AppContext() {
@@ -29,7 +29,7 @@ public class AppContext {
         return AppContext.instance;
     }
 
-    public User getUser() {
+    public static User getUser() {
         return user;
     }
 

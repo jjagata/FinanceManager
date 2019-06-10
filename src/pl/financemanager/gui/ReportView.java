@@ -24,7 +24,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
 import pl.financemanager.db.Budget;
 
-public class ReportView extends JPanel {
+class ReportView extends JPanel {
     private JLabel monthLabel;
     private JLabel yearLabel;
     private JComboBox<String> months;
@@ -83,7 +83,7 @@ public class ReportView extends JPanel {
     public void update() {
         int month = this.months.getSelectedIndex();
         int year = (Integer) this.years.getSelectedItem();
-        int userId = AppContext.getInstance().getUser().getId();
+        int userId = AppContext.getUser().getId();
 
         try {
             this.tableModel.setDataVector(
@@ -135,32 +135,11 @@ public class ReportView extends JPanel {
         return months;
     }
 
-    public void setMonths(JComboBox<String> months) {
-        this.months = months;
-    }
-
     public JComboBox<Integer> getYears() {
         return years;
-    }
-
-    public void setYears(JComboBox<Integer> years) {
-        this.years = years;
     }
 
     public DefaultTableModel getTableModel() {
         return tableModel;
     }
-
-    public void setTableModel(DefaultTableModel tableModel) {
-        this.tableModel = tableModel;
-    }
-
-    public JFreeChart getChart() {
-        return chart;
-    }
-
-    public void setChart(JFreeChart chart) {
-        this.chart = chart;
-    }
-
 }

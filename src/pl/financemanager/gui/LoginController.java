@@ -2,16 +2,12 @@ package pl.financemanager.gui;
 
 import pl.financemanager.db.User;
 
-import java.awt.Toolkit;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-public class LoginController implements ActionListener {
+class LoginController implements ActionListener {
     private JFrame frame;
     private AppLogic logic;
     private LoginView view;
@@ -30,11 +26,11 @@ public class LoginController implements ActionListener {
             try {
                 user = logic.login(view.getLoginTextField().getText(), view.getPasswordField().getPassword());
             } catch (SQLException ex) {
-                AppContext.getInstance().showError();
+                AppContext.showError();
             }
 
             if (user == null) {
-                AppContext.getInstance().showError("Invalid username or passowrd!");
+                AppContext.showError("Invalid username or passowrd!");
             } else {
                 AppContext.createInstance(user);
                 frame.getContentPane().removeAll();

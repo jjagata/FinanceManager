@@ -4,7 +4,7 @@ import pl.financemanager.db.Category;
 
 import javax.swing.*;
 
-public class CategoryModel extends DefaultComboBoxModel<Category> {
+class CategoryModel extends DefaultComboBoxModel<Category> {
     public CategoryModel(Category[] items) {
         super(items);
     }

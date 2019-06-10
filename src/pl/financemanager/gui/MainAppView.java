@@ -8,7 +8,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class MainAppView {
+class MainAppView {
 	private JFrame frame;
 
 	private ReportView reportView;

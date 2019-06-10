@@ -20,13 +20,6 @@ public class Budget {
         this.user = new User(userId);
     }
 
-    public Budget(Integer budgetId, Calendar month, BigDecimal budget, User user) {
-        this.budgetId = budgetId;
-        this.month = month;
-        this.budget = budget;
-        this.user = user;
-    }
-
     public Integer getBudgetId() {
         return budgetId;
     }

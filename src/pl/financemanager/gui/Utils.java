@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class Utils {
+class Utils {
 	private static String datePattern = "dd.MM.yyyy";
 	private static SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 

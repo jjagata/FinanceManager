@@ -24,16 +24,16 @@ public class BudgetsController implements ActionListener {
 			try {
 				budget = BigDecimal.valueOf(Double.valueOf(view.getBudgetField().getText()));
 			} catch (NumberFormatException ex) {
-				AppContext.getInstance().showError("Invalid budget value!");
+				AppContext.showError("Invalid budget value!");
 				view.getBudgetField().setText("");
 				return;
 			}
 
-			int userId = AppContext.getInstance().getUser().getId();
+			int userId = AppContext.getUser().getId();
 			try {
 				logic.saveBudget(userId, month, year, budget);
 			} catch (SQLException ex) {
-				AppContext.getInstance().showError();
+				AppContext.showError();
 			}
 		}
 
