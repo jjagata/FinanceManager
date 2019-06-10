@@ -17,7 +17,7 @@ public class Utils {
 			cal.setTime(d);
 			return cal;
 		} catch (ParseException e) {
-			e.printStackTrace();
+			AppContext.showError("Invalid date!");
 		}
 		return null;
 	}

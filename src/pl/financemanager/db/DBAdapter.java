@@ -117,7 +117,7 @@ public class DBAdapter {
 
     public Collection<Spending> getSpendings(int userId, int month, int year) throws SQLException {
         Statement statement = conn.createStatement();
-        String sql = "SELECT expenses_id,user_id,amount, month, year, day FROM expenses WHERE user_id =" + userId + " AND month =" +
+        String sql = "SELECT expenses_id,user_id,amount, month, year, day, category_id FROM expenses WHERE user_id =" + userId + " AND month =" +
                 month + " AND year = " + year + " ORDER BY year, month, day";
         ResultSet rs = statement.executeQuery(sql);
         Collection<Spending> spendings = new ArrayList<>();
@@ -137,6 +137,7 @@ public class DBAdapter {
             sp.setDay(calendar);
             spendings.add(sp);
 
+            sp.setCategory(getCategory(rs.getInt("category_id")));
         }
         return spendings;
     }
