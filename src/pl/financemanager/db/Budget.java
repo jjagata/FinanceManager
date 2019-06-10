@@ -1,6 +1,7 @@
 package pl.financemanager.db;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class Budget {
     private Integer budgetId;
@@ -10,6 +11,13 @@ public class Budget {
 
     public Budget(){
 
+    }
+
+    public Budget(int month, int year, BigDecimal budget, int userId) {
+        Calendar cal = new GregorianCalendar(year, month, 1);
+        this.month = cal;
+        this.budget = budget;
+        this.user = new User(userId);
     }
 
     public Budget(Integer budgetId, Calendar month, BigDecimal budget, User user) {

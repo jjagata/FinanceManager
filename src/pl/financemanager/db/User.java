@@ -9,6 +9,10 @@ public class User {
 
     }
 
+    public User(Integer id) {
+        this.id = id;
+    }
+
     public User(Integer id, String login, String password) {
         this.id = id;
         this.login = login;

@@ -52,6 +52,18 @@ public class DBAdapter {
         return budgets;
     }
 
+    public Integer getBudgetId(int userId, int month, int year) throws SQLException {
+        Statement statement = conn.createStatement();
+        String sql = "SELECT budget_id FROM budgets WHERE user_id =" + userId + " AND month = " + month + " AND year = " + year;
+        ResultSet rs = statement.executeQuery(sql);
+
+        if (rs.next() == false) {
+            return null;
+        }
+
+        return rs.getInt("budget_id");
+    }
+
     public void saveBudget(Budget bu) throws SQLException {
         Statement statement = conn.createStatement();
         String sql;
