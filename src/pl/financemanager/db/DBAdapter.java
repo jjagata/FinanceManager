@@ -29,7 +29,7 @@ public class DBAdapter {
 
     public Collection<Budget> getBudgets(int userId) throws SQLException {
         Statement statement = conn.createStatement();
-        String sql = "SELECT user_id,amount, month, year, budget_id FROM budgets WHERE user_id =" + userId;
+        String sql = "SELECT user_id,amount, month, year, budget_id FROM budgets WHERE user_id =" + userId + " ORDER BY year, month";
         ResultSet rs = statement.executeQuery(sql);
         Collection<Budget> budgets = new ArrayList<>();
         while (rs.next()) {
@@ -100,7 +100,7 @@ public class DBAdapter {
     public Collection<Spending> getSpendings(int userId, int month, int year) throws SQLException {
         Statement statement = conn.createStatement();
         String sql = "SELECT expenses_id,user_id,amount, month, year, day FROM expenses WHERE user_id =" + userId + " AND month =" +
-                month + " AND year = " + year;
+                month + " AND year = " + year + " ORDER BY year, month, day";
         ResultSet rs = statement.executeQuery(sql);
         Collection<Spending> spendings = new ArrayList<>();
 
@@ -115,7 +115,7 @@ public class DBAdapter {
 
             int day = rs.getInt("day");
 
-            Calendar calendar = new GregorianCalendar(year, month,day);
+            Calendar calendar = new GregorianCalendar(year, month, day);
             sp.setDay(calendar);
             spendings.add(sp);
 
@@ -123,13 +123,13 @@ public class DBAdapter {
         return spendings;
     }
 
-    public User login(String log,String password)throws SQLException{
+    public User login(String log, String password) throws SQLException {
         Statement statement = conn.createStatement();
         String sql = "SELECT user_id, login, password FROM users WHERE login = '" + log + "' AND password = '" +
                 password + "'";
         ResultSet rs = statement.executeQuery(sql);
 
-        if(rs.next()==false){
+        if (rs.next() == false) {
             return null;
         }
         User user = new User();
