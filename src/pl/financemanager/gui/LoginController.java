@@ -15,7 +15,7 @@ class LoginController implements ActionListener {
     public LoginController(JFrame frame, LoginView view) {
         this.frame = frame;
         this.view = view;
-        this.logic = new AppLogic();
+        this.logic = AppLogic.getInstance();
     }
 
     @Override

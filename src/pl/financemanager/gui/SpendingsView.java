@@ -41,7 +41,7 @@ class SpendingsView extends JPanel {
     public SpendingsView() {
         this.setLayout(new BorderLayout());
 
-        this.logic = new AppLogic();
+        this.logic = AppLogic.getInstance();
 
         this.dayLabel = new JLabel("Day: ");
         UtilDateModel model = new UtilDateModel();

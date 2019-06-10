@@ -11,7 +11,7 @@ public class BudgetsController implements ActionListener {
 
 	public BudgetsController(BudgetsView view) {
 		this.view = view;
-		this.logic = new AppLogic();
+		this.logic = AppLogic.getInstance();
 	}
 
 	@Override

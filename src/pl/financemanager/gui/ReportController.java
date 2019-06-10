@@ -9,7 +9,7 @@ class ReportController implements ActionListener {
 	private ReportView view;
 
 	public ReportController(ReportView view) {
-		this.logic = new AppLogic();
+		this.logic = AppLogic.getInstance();
 		this.view = view;
 	}
 

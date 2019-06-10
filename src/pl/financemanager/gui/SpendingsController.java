@@ -16,7 +16,7 @@ class SpendingsController implements ActionListener {
 
     public SpendingsController(SpendingsView view) {
         this.view = view;
-        this.logic = new AppLogic();
+        this.logic = AppLogic.getInstance();
     }
 
     @Override

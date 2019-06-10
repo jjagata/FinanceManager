@@ -12,7 +12,19 @@ import java.util.Collection;
 import java.util.GregorianCalendar;
 
 public class AppLogic {
-    private DBAdapter dba = new DBAdapter();
+    private static AppLogic instance;
+    private DBAdapter dba;
+
+    private AppLogic(){
+        this.dba = new DBAdapter();
+    }
+
+    public static AppLogic getInstance(){
+        if (AppLogic.instance == null) {
+            AppLogic.instance = new AppLogic();
+        }
+        return AppLogic.instance;
+    }
 
     public User login(String log, char[] password) throws SQLException {
         return dba.login(log, String.valueOf(password));

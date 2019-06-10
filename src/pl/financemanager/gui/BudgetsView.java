@@ -38,7 +38,7 @@ class BudgetsView extends JPanel {
         this.budgetField = new JTextField(10);
         this.saveButton = new JButton("Save");
         this.table = new JTable();
-        this.logic = new AppLogic();
+        this.logic = AppLogic.getInstance();
 
         JPanel addBudgetPanel = new JPanel();
         addBudgetPanel.add(this.monthLabel);

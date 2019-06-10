@@ -43,7 +43,7 @@ class ReportView extends JPanel {
         this.months = new JComboBox<>(Utils.monthList);
         this.years = new JComboBox<>(Utils.yearList);
         this.table = new JTable();
-        this.logic = new AppLogic();
+        this.logic = AppLogic.getInstance();
 
         JPanel filterPanel = new JPanel();
         filterPanel.add(this.monthLabel);
